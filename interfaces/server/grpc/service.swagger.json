@@ -1,0 +1,131 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "github.com/gleach/kill/interfaces/server/grpc/service.proto",
+    "version": "version not set"
+  },
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {},
+  "definitions": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "serviceProgram": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "host_name": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        }
+      }
+    },
+    "serviceProgramEpisode": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "program_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "air_date": {
+          "type": "string"
+        },
+        "recording_path": {
+          "type": "string"
+        }
+      }
+    },
+    "serviceProgramEpisodeDetails": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "host_name": {
+          "type": "string"
+        },
+        "episode_name": {
+          "type": "string"
+        },
+        "start_offset": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "air_date": {
+          "type": "string"
+        },
+        "recording_path": {
+          "type": "string"
+        }
+      }
+    },
+    "serviceProgramScheduleEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "program_id": {
+          "type": "string"
+        },
+        "weekday": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "hour": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    }
+  }
+}

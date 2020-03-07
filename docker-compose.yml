@@ -1,0 +1,75 @@
+version: "2"
+services:
+  base:
+    build: .
+    image: stream-source-base
+    volumes:
+      - .:/go/src/github.com/grahamjleach/stream-source
+
+  build:
+    image: stream-source-base
+    command: ["make", "build"]
+    volumes_from:
+      - base
+
+  build_proto:
+    image: stream-source-base
+    command: ["make", "proto"]
+    volumes_from:
+      - base
+
+  dep:
+    image: stream-source-base
+    command: ["make", "dep"]
+    volumes_from:
+      - base
+
+  frontend:
+    image: stream-source-base
+    command: ["./bin/stream-source-frontend"]
+    environment:
+      - LOG_LEVEL=info
+      - SCHEDULE_TARGET=schedule:8483
+      - HTTP_BIND_PORT=8080
+    links:
+      - schedule
+    ports:
+      - "15000:8080"
+    volumes_from:
+      - base
+
+  source:
+    image: stream-source-base
+    command: ["./bin/stream-source-source"]
+    environment:
+      - LOG_LEVEL=info
+      - INI_FILE=./conf/ici.ini
+      - SCHEDULE_TARGET=schedule:8483
+    links:
+      - icecast
+      - schedule
+    volumes_from:
+      - base
+
+  schedule:
+    image: stream-source-base
+    command: ["./bin/stream-source-schedule"]
+    environment:
+      - LOG_LEVEL=info
+      - GRPC_BIND_PORT=8483
+      - SCHEDULE_DB_PATH=./schedule.db
+      - SCHEDULE_JSON_PATH=./schedule.json
+    volumes_from:
+      - base
+
+  icecast:
+    image: moul/icecast
+    environment:
+    - ICECAST_SOURCE_PASSWORD=none
+    - ICECAST_RELAY_PASSWORD=none
+    - ICECAST_ADMIN_PASSWORD=none
+    - ICECAST_PASSWORD=none
+    ports:
+      - "15001:8000"
+    volumes:
+      - ./conf/icecast.xml:/etc/icecast2/icecast.xml
